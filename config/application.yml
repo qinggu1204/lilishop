@@ -29,7 +29,7 @@ spring:
     type: redis
   # Redis
   redis:
-    host: 127.0.0.1
+    host: 111.67.201.138
     port: 6379
     password: lilishop
     lettuce:
@@ -60,9 +60,11 @@ spring:
       default-datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/lilishop?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://111.67.201.138:3306/lilishop?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
         username: root
         password: lilishop
+        connectTimeout: 5000
+        socketTimeout: 30000
         maxActive: 50
         initialSize: 20
         maxWait: 60000
@@ -224,10 +226,10 @@ lili:
   system:
     isDemoSite: false
     isTestModel: true
-  #     脱敏级别：
-  #     0：不做脱敏处理
-  #     1：管理端用户手机号等信息脱敏
-  #     2：商家端信息脱敏（为2时，表示管理端，商家端同时脱敏）
+    #     脱敏级别：
+    #     0：不做脱敏处理
+    #     1：管理端用户手机号等信息脱敏
+    #     2：商家端信息脱敏（为2时，表示管理端，商家端同时脱敏）
     sensitiveLevel: 1
 
   statistics:
@@ -247,10 +249,10 @@ lili:
     admin: http://127.0.0.1:8888
   #api地址
   api:
-    buyer: https://z171l91606.51mypc.cn
-    base: http://127.0.0.1:8888
-    manager: http://127.0.0.1:8888
-    seller: http://127.0.0.1:8888
+    buyer: https://127.0.0.1:8888
+    base: http://127.0.0.1:8890
+    manager: http://127.0.0.1:8887
+    seller: http://127.0.0.1:8889
 
   # jwt 细节设定
   jwt-setting:
@@ -269,7 +271,7 @@ lili:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: 127.0.0.1:9200
+      cluster-nodes: 111.67.201.138:9200
       index:
         number-of-replicas: 0
         number-of-shards: 3
@@ -280,28 +282,28 @@ lili:
     #        password: LiLiShopES
 
     logstash:
-      server: 127.0.0.1:4560
+      server: 111.67.201.138:4560
     rocketmq:
-      promotion-topic: lili_promotion_topic
-      promotion-group: lili_promotion_group
-      msg-ext-topic: lili_msg_topic
-      msg-ext-group: lili_msg_group
-      goods-topic: lili_goods_topic
-      goods-group: lili_goods_group
-      order-topic: lili_order_topic
-      order-group: lili_order_group
-      member-topic: lili_member_topic
-      member-group: lili_member_group
-      other-topic: lili_other_topic
-      other-group: lili_other_group
-      notice-topic: lili_notice_topic
-      notice-group: lili_notice_group
-      notice-send-topic: lili_send_notice_topic
-      notice-send-group: lili_send_notice_group
-      after-sale-topic: lili_after_sale_topic
-      after-sale-group: lili_after_sale_group
+      promotion-topic: shop_lili_promotion_topic
+      promotion-group: shop_lili_promotion_group
+      msg-ext-topic: shop_lili_msg_topic
+      msg-ext-group: shop_lili_msg_group
+      goods-topic: shop_lili_goods_topic
+      goods-group: shop_lili_goods_group
+      order-topic: shop_lili_order_topic
+      order-group: shop_lili_order_group
+      member-topic: shop_lili_member_topic
+      member-group: shop_lili_member_group
+      other-topic: shop_lili_other_topic
+      other-group: shop_lili_other_group
+      notice-topic: shop_lili_notice_topic
+      notice-group: shop_lili_notice_group
+      notice-send-topic: shop_lili_send_notice_topic
+      notice-send-group: shop_lili_send_notice_group
+      after-sale-topic: shop_lili_after_sale_topic
+      after-sale-group: shop_lili_after_sale_group
 rocketmq:
-  name-server: 127.0.0.1:9876
+  name-server: 111.67.201.138:9876
   isVIPChannel: false
   producer:
     group: lili_group
@@ -310,7 +312,7 @@ rocketmq:
 xxl:
   job:
     admin:
-      addresses: http://127.0.0.1:9001/xxl-job-admin
+      addresses: http://111.67.201.138:9001/xxl-job-admin
     executor:
       appname: xxl-job-executor-lilishop
       address:
