@@ -63,8 +63,8 @@ spring:
         url: jdbc:mysql://111.67.201.138:3306/lilishop?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
         username: root
         password: lilishop
-        connectTimeout: 5000
-        socketTimeout: 30000
+        connectTimeout: 10000
+        socketTimeout: 40000
         maxActive: 50
         initialSize: 20
         maxWait: 60000
@@ -257,7 +257,7 @@ lili:
   # jwt 细节设定
   jwt-setting:
     # token过期时间（分钟）
-    tokenExpireTime: 30
+    tokenExpireTime: 60
 
   # 使用Spring @Cacheable注解失效时间
   cache:
