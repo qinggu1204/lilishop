@@ -281,6 +281,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public OrderDetailVO queryDetail(String orderSn) {
+        System.out.println(orderSn + "service层测试");
         Order order = this.getBySn(orderSn);
         if (order == null) {
             throw new ServiceException(ResultCode.ORDER_NOT_EXIST);
@@ -348,6 +349,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
     @Override
     public Order getBySn(String orderSn) {
+        System.out.println(this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getSn, orderSn)));
         return this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getSn, orderSn));
     }
 

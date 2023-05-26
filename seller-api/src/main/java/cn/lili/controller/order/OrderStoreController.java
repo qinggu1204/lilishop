@@ -71,6 +71,11 @@ public class OrderStoreController {
     private LogisticsService logisticsService;
 
 
+    public OrderStoreController() {
+
+    }
+
+
     @ApiOperation(value = "查询订单列表")
     @GetMapping
     public ResultMessage<IPage<OrderSimpleVO>> queryMineOrder(OrderSearchParams orderSearchParams) {
