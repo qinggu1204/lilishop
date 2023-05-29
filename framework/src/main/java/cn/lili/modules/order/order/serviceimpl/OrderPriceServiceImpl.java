@@ -92,7 +92,8 @@ public class OrderPriceServiceImpl implements OrderPriceService {
      * @param orderPrice 修改订单金额
      */
     private Order updateOrderPrice(String orderSn, Double orderPrice) {
-        Order order = OperationalJudgment.judgment(orderService.getBySn(orderSn));
+       /* Order order = OperationalJudgment.judgment(orderService.getBySn(orderSn));*/
+        Order order = orderService.getBySn(orderSn);
         //判定是否支付
         if (order.getPayStatus().equals(PayStatusEnum.PAID.name())) {
             throw new ServiceException(ResultCode.ORDER_UPDATE_PRICE_ERROR);
