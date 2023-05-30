@@ -33,7 +33,7 @@ public class GoodsServiceTest {
 //    private GoodsGalleryService goodsGalleryService;
 
     @Autowired
-    private GoodsServiceImpl goodsService;
+    private GoodsService goodsService;
 
     @BeforeEach
     void setUp() {
