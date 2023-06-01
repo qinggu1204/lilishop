@@ -94,4 +94,113 @@ public class FileControllerIntegrationTest {
         assertEquals(ResultCode.SUCCESS.code(), result.getCode());
     }
 
+    // 情况1: 用户角色为MEMBER，文件拥有者是MEMBER，newName有效
+    @Test
+    public void testUploadFile_case1() throws Exception {
+        String newName = "newName1";
+        String fileId = "1661658363582246914";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况2: 用户角色为STORE，文件拥有者是STORE，newName有效
+    @Test
+    public void testUploadFile_case2() throws Exception {
+        String newName = "newName1";
+        String fileId = "1661658363582246914";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况3: 用户角色为MANAGER，文件拥有者任意，newName有效
+    @Test
+    public void testUploadFile_case3() throws Exception {
+        String newName = "newName1";
+        String fileId = "1661658363582246914";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况4: 用户角色为MEMBER，文件拥有者是STORE或者MANAGER，newName有效
+    @Test
+    public void testUploadFile_case4() throws Exception {
+        String newName = "newName1";
+        String fileId = "1661658363582246914";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况5: 用户角色为STORE，文件拥有者是MEMBER或者MANAGER，newName有效
+    @Test
+    public void testUploadFile_case5() throws Exception {
+        String newName = "newName1";
+        String fileId = "1661658363582246914";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况6: 用户角色为MANAGER，文件拥有者是MEMBER或者STORE，newName有效
+    @Test
+    public void testUploadFile_case6() throws Exception {
+        String newName = "newName1";
+        String fileId = "1661658363582246914";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况7: accessToken无效或不存在，尝试进行文件重命名，newName有效
+    @Test
+    public void testUploadFile_case7() throws Exception {
+        String newName = "newName1";
+        String fileId = "1661658363582246914";
+        String accessToken = "invalidToken";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况8: 用户角色任意，但fileId不存在，newName有效
+    @Test
+    public void testUploadFile_case8() throws Exception {
+        String newName = "newName1";
+        String fileId = "invalidFileId";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+    // 情况9: 用户角色任意，fileId存在，但newName无效或为空
+    @Test
+    public void testUploadFile_case9() throws Exception {
+        String newName = "";
+        String fileId = "invalidFileId";
+        String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyQ29udGV4dCI6IntcInVzZXJuYW1lXCI6XCJhZG1pblwiLFwibmlja05hbWVcIjpcIuWIneS4gFwiLFwiZmFjZVwiOlwiaHR0cHM6Ly9saWxpc2hvcC1vc3Mub3NzLWNuLWJlaWppbmcuYWxpeXVuY3MuY29tLzY1ZTg3ZmZhNzE4YjQyYmI5YzIwMTcxMjU2NmRiYzlhLnBuZ1wiLFwiaWRcIjpcIjEzMzczMDYxMTAyNzc0NzYzNTJcIixcImxvbmdUZXJtXCI6ZmFsc2UsXCJyb2xlXCI6XCJNQU5BR0VSXCIsXCJpc1N1cGVyXCI6dHJ1ZX0iLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY4NTE5NDkwOX0.4Evz5yCV0T1Dck0y7B9J88lksqBHOpPnr0CcJCDYgtA";
+
+        ResultMessage<File> result = fileController.upload(accessToken, fileId, newName);
+
+        assertEquals(ResultCode.SUCCESS.code(), result.getCode());
+    }
+
+
 }
