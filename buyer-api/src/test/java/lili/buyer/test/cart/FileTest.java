@@ -1,4 +1,4 @@
-package cn.lili.buyer.test.cart;
+package lili.buyer.test.cart;
 
 
 import cn.lili.modules.file.plugin.FilePlugin;
@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 

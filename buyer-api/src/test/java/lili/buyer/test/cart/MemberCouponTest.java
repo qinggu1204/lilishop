@@ -1,4 +1,4 @@
-package cn.lili.buyer.test.cart;
+package lili.buyer.test.cart;
 
 import cn.lili.modules.promotion.service.MemberCouponService;
 import org.junit.jupiter.api.Test;
