@@ -85,4 +85,6 @@ public interface OrderMapper extends BaseMapper<Order> {
     List<Order> queryListByParams(@Param(Constants.WRAPPER) Wrapper<Order> queryWrapper);
 
 
+    @Select("select * from li_order where sn = #{orderSn}")
+    Order getAnOrder(@Param("orderSn")String orderSn);
 }

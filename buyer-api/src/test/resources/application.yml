@@ -1,12 +1,21 @@
 server:
+  port: 8888
+
   servlet:
     context-path: /
-
-  tomcat:
-    uri-encoding: UTF-8
-    threads:
-      min-spare: 50
-      max: 1000
+  #
+  #  tomcat:
+  #    #最大链接数，默认不设置，默认是10000
+  #    max-connections: 6500
+  #    #最大等待队列长度，允许HTTP请求缓存到请求队列的最大个数，默认不限制
+  #    accept-count: 1000
+  #    threads:
+  #      #最少闲置
+  #      min-spare: 50
+  #      #最大线程数  ，默认是200
+  #      max: 800
+  netty:
+    connection-timeout:
 
 # 与Spring Boot 2一样，默认情况下，大多数端点都不通过http公开，我们公开了所有端点。对于生产，您应该仔细选择要公开的端点。
 management:
@@ -20,19 +29,30 @@ management:
       exposure:
         include: '*'
 spring:
+  application:
+    name: buyer-api
   # 要在其中注册的Spring Boot Admin Server的URL。
   boot:
     admin:
       client:
-        url: http://192.168.0.116:8000
+        url: http://127.0.0.1:8000
+  # 文件大小上传配置
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
   cache:
     type: redis
-  #amqp
-  #  rabbitmq:
-  #    host: 192.168.0.116
+  #jackson json解析
+  jackson:
+    time-zone: GMT+8
+    serialization:
+      #关闭jackson 对json做解析
+      fail-on-empty-beans: false
+
   # Redis
   redis:
-    host: 192.168.0.116
+    host: 111.67.201.138
     port: 6379
     password: lilishop
     lettuce:
@@ -45,17 +65,7 @@ spring:
         max-idle: 10
         # 连接池中的最小空闲连接 默认 8
         min-idle: 8
-  # 文件大小上传配置
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
-  jackson:
-    time-zone: GMT+8
-    serialization:
-      #关闭jackson 对json做解析
-      fail-on-empty-beans: false
-
+  #mysql
   shardingsphere:
     datasource:
       #  数据库名称，可自定义，可以为多个，以逗号隔开，每个在这里定义的库，都要在下面定义连接属性
@@ -63,13 +73,13 @@ spring:
       default-datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://192.168.0.116:3306/new-lili?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://111.67.201.138:3306/lilishop?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
         username: root
         password: lilishop
-        maxActive: 20
-        initialSize: 5
+        maxActive: 50
+        initialSize: 10
         maxWait: 60000
-        minIdle: 5
+        minIdle: 10
         timeBetweenEvictionRunsMillis: 60000
         minEvictableIdleTimeMillis: 300000
         validationQuery: SELECT 1 FROM DUAL
@@ -109,7 +119,7 @@ spring:
       sql:
         show: false
 
-# 忽略鉴权url
+# 忽略TOKEN 鉴权 的url
 ignored:
   urls:
     - /editor-app/**
@@ -118,23 +128,24 @@ ignored:
     - /MP_verify_qSyvBPhDsPdxvOhC.txt
     - /weixin/**
     - /source/**
-    - /buyer/mini-program/**
-    - /buyer/cashier/**
-    - /buyer/pageData/**
-    - /buyer/article/**
+    - /buyer/payment/cashier/**
+    - /buyer/payment/cashierRefund/**
+    - /buyer/other/pageData/**
+    - /buyer/other/article/**
     - /buyer/goods/**
-    - /buyer/category/**
     - /buyer/store/**
-    - /buyer/connect/**
+    - /buyer/passport/connect/**
     - /buyer/members/**
+    - /buyer/passport/member/**
+    - /buyer/passport/member/refresh/**
     - /buyer/promotion/pintuan/**
     - /buyer/promotion/seckill/**
     - /buyer/promotion/pointsGoods/**
-    - /buyer/memberEvaluation/**/goodsEvaluation
-    - /buyer/memberEvaluation/**/evaluationNumber
-    - /store/login/**
-    - /manager/user/login
-    - /manager/user/refresh/**
+    - /buyer/promotion/coupon
+    - /buyer/member/evaluation/**/goodsEvaluation
+    - /buyer/member/evaluation/**/evaluationNumber
+    - /buyer/other/appVersion/**
+    - /buyer/broadcast/studio/**
     - /druid/**
     - /swagger-ui.html
     - /doc.html
@@ -171,18 +182,20 @@ mybatis-plus:
 
 # 日志
 logging:
+  config: classpath:logback-spring.xml
   # 输出级别
   level:
-    cn.lili: info
-  #    org.hibernate: debug
+    root: info
   #    org.springframework: debug
   file:
     # 指定路径
     path: lili-logs
-    # 最大保存天数
-    max-history: 7
-    # 每个文件最大大小
-    max-size: 5MB
+  logback:
+    rollingpolicy:
+      # 最大保存天数
+      max-history: 7
+      # 每个文件最大大小
+      max-file-size: 5MB
 #加密参数
 jasypt:
   encryptor:
@@ -190,7 +203,7 @@ jasypt:
 
 lili:
   system:
-    isDemoSite: true
+    isDemoSite: false
   statistics:
     # 在线人数统计 X 小时。这里设置48，即统计过去48小时每小时在线人数
     onlineMember: 48
@@ -202,16 +215,16 @@ lili:
     sk: zhNKVrJK6UPOhqIjn8AQvG37b9sz6
   #域名
   domain:
-    pc: http://192.168.0.116:8888
-    wap: http://192.168.0.116:8888
-    seller: http://192.168.0.116:8888
-    admin: http://192.168.0.116:8888
+    pc: http://127.0.0.1:8888
+    wap: http://127.0.0.1:8888
+    seller: http://127.0.0.1:8888
+    admin: http://127.0.0.1:8888
   #api地址
   api:
-    buyer: https://z171l91606.51mypc.cn
-    base: http://192.168.0.116:8888
-    manager: http://192.168.0.116:8888
-    seller: http://192.168.0.116:8888
+    buyer: https://127.0.0.1:8888
+    base: http://127.0.0.1:8890
+    manager: http://127.0.0.1:8887
+    seller: http://127.0.0.1:8889
 
   # jwt 细节设定
   jwt-setting:
@@ -230,7 +243,7 @@ lili:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: 192.168.0.116:9200
+      cluster-nodes: 111.67.201.138:9200
       index:
         number-of-replicas: 0
         number-of-shards: 3
@@ -240,7 +253,7 @@ lili:
     #        username: elastic
     #        password: LiLiShopES
     logstash:
-      server: 127.0.0.1:4560
+      server: 111.67.201.138:4560
     rocketmq:
       promotion-topic: lili_promotion_topic
       promotion-group: lili_promotion_group
@@ -252,14 +265,18 @@ lili:
       order-group: lili_order_group
       member-topic: lili_member_topic
       member-group: lili_member_group
+      store-topic: lili_store_topic
+      store-group: lili_store_group
       other-topic: lili_other_topic
       other-group: lili_other_group
       notice-topic: lili_notice_topic
       notice-group: lili_notice_group
       notice-send-topic: lili_send_notice_topic
       notice-send-group: lili_send_notice_group
+      after-sale-topic: lili_after_sale_topic
+      after-sale-group: lili_after_sale_group
 rocketmq:
-  name-server: 192.168.0.116:9876
+  name-server: 111.67.201.138:9876
   producer:
     group: lili_group
     send-message-timeout: 30000
@@ -267,7 +284,7 @@ rocketmq:
 xxl:
   job:
     admin:
-      addresses: http://192.168.0.116:9001/xxl-job-admin
+      addresses: http://111.67.201.138:9001/xxl-job-admin
     executor:
       appname: xxl-job-executor-lilishop
       address:

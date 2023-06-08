@@ -70,7 +70,6 @@ public class OrderStoreController {
     @Autowired
     private LogisticsService logisticsService;
 
-
     @ApiOperation(value = "查询订单列表")
     @GetMapping
     public ResultMessage<IPage<OrderSimpleVO>> queryMineOrder(OrderSearchParams orderSearchParams) {

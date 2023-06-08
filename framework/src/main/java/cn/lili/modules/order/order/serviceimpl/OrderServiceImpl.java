@@ -67,6 +67,7 @@ import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -273,7 +274,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public OrderDetailVO queryDetail(String orderSn) {
         Order order = this.getBySn(orderSn);
         if (order == null) {
-            throw new ServiceException(ResultCode.ORDER_NOT_EXIST);
+            /*throw new ServiceException(ResultCode.ORDER_NOT_EXIST);*/
+            return null;
         }
         //查询订单项信息
         List<OrderItem> orderItems = orderItemService.getByOrderSn(orderSn);
@@ -401,16 +403,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @SystemLogPoint(description = "修改订单", customerLog = "'订单[' + #orderSn + ']收货信息修改，修改为'+#memberAddressDTO.consigneeDetail+'")
     @Transactional(rollbackFor = Exception.class)
     public Order updateConsignee(String orderSn, MemberAddressDTO memberAddressDTO) {
-        Order order = OperationalJudgment.judgment(this.getBySn(orderSn));
-
+        Order order = this.getBySn(orderSn);
+        if(order == null){
+            return null;
+        }
+        /*Order order = OperationalJudgment.judgment(this.getBySn(orderSn));*/
         //要记录之前的收货地址，所以需要以代码方式进行调用 不采用注解
         String message = "订单[" + orderSn + "]收货信息修改，由[" + order.getConsigneeDetail() + "]修改为[" + memberAddressDTO.getConsigneeDetail() + "]";
         //记录订单操作日志
         BeanUtil.copyProperties(memberAddressDTO, order);
         this.updateById(order);
 
-        OrderLog orderLog = new OrderLog(orderSn, UserContext.getCurrentUser().getId(), UserContext.getCurrentUser().getRole().getRole(), UserContext.getCurrentUser().getUsername(), message);
-        orderLogService.save(orderLog);
+        /*OrderLog orderLog = new OrderLog(orderSn, UserContext.getCurrentUser().getId(), UserContext.getCurrentUser().getRole().getRole(), UserContext.getCurrentUser().getUsername(), message);
+        orderLogService.save(orderLog);*/
 
         return order;
     }
@@ -419,7 +424,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @OrderLogPoint(description = "'订单['+#orderSn+']发货，发货单号['+#logisticsNo+']'", orderSn = "#orderSn")
     @Transactional(rollbackFor = Exception.class)
     public Order delivery(String orderSn, String logisticsNo, String logisticsId) {
-        Order order = OperationalJudgment.judgment(this.getBySn(orderSn));
+        /*Order order = OperationalJudgment.judgment(this.getBySn(orderSn));*/
+        Order order = this.getBySn(orderSn);
         //如果订单未发货，并且订单状态值等于待发货
         if (order.getDeliverStatus().equals(DeliverStatusEnum.UNDELIVERED.name()) && order.getOrderStatus().equals(OrderStatusEnum.UNDELIVERED.name())) {
             //获取对应物流
